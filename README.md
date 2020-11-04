@@ -148,15 +148,7 @@ try
         var savedJson = System.IO.File.ReadAllText("Token.json");
         token = JsonConvert.DeserializeObject<XeroOAuth2Token>(savedJson);
     }
-    if (token == null)
-    {
-        token = new XeroOAuth2Token
-        {
-            AccessToken = _config["AccessToken"],
-            IdToken = _config["IdToken"],
-            RefreshToken = _config["RefreshToken"]
-        };
-    }
+    if (token == null) token = new XeroOAuth2Token { RefreshToken = _config["RefreshToken"] };
     var newToken = await client.RefreshAccessTokenAsync(token);
     if (newToken != null) token = newToken;
     var json = JsonConvert.SerializeObject(token, Formatting.Indented);
@@ -203,6 +195,6 @@ var contact = await api.GetContactByContactNumberAsyncWithHttpInfo(accessToken, 
 ## Finally
 
 Whilst I had trouble with working out how to do this initially through their documentation, Xero have produced [SDKs](https://developer.xero.com/documentation/libraries/overview) for the main development systems.
-*Other providers out there certainly have not!* - Amazon's Merchant Web Services and DHL's XML Services are just a bunch of XSDs are two examples from two large multinationals who should be producing SDKs.
+*Other providers out there certainly have not!* - Amazon's Merchant Web Services and DHL's XML Services are just a bunch of XSDs. They are two examples from large multinationals who should really be producing SDKs.
 
 The Xero SDK appears to work well - although I have not got the application I am using it in actually live yet ;)

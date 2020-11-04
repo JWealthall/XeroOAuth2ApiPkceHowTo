@@ -39,15 +39,7 @@ namespace XeroOAuth2ApiPkceHowTo
                         token = JsonConvert.DeserializeObject<XeroOAuth2Token>(savedJson);
                     }
 
-                    if (token == null)
-                    {
-                        token = new XeroOAuth2Token
-                        {
-                            AccessToken = _config["AccessToken"],
-                            IdToken = _config["IdentityToken"],
-                            RefreshToken = _config["RefreshToken"]
-                        };
-                    }
+                    if (token == null) token = new XeroOAuth2Token { RefreshToken = _config["RefreshToken"] };
 
                     IXeroToken newToken = Task.Run(() => client.RefreshAccessTokenAsync(token)).GetAwaiter().GetResult();
                     if (newToken != null) token = newToken;
@@ -121,15 +113,7 @@ namespace XeroOAuth2ApiPkceHowTo
                         token = JsonConvert.DeserializeObject<XeroOAuth2Token>(savedJson);
                     }
 
-                    if (token == null)
-                    {
-                        token = new XeroOAuth2Token
-                        {
-                            AccessToken = _config["AccessToken"],
-                            IdToken = _config["IdToken"],
-                            RefreshToken = _config["RefreshToken"]
-                        };
-                    }
+                    if (token == null) token = new XeroOAuth2Token() { RefreshToken = _config["RefreshToken"] };
 
                     var newToken = await client.RefreshAccessTokenAsync(token);
                     if (newToken != null) token = newToken;
